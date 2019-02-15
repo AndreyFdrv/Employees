@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employees</title>
+</head>
+<body>
+    <h3>Список сотрудников</h3>
+    <table border="1">
+        <tr>
+            <td><p>ФИО</p></td>
+            <td><p>Статус</p></td>
+            <td><p>Отдел</p></td>
+            <td><p>Должность</p></td>
+            <td><p>Дата приёма</p></td>
+            <td><p>Дата увольнения</p></td>
+        </tr>
+        @foreach (var e in ViewBag.Employees)
+        {
+        <tr>
+            @{ string fullName = e.SecondName + " " + e.FirstName[0] + "." + e.LastName[0] + "."; }
+            <td><p>@fullName</p></td>
+            <td><p>@e.Status</p></td>
+            <td><p>@e.Department</p></td>
+            <td><p>@e.Post</p></td>
+            <td><p>@e.EmployDate</p></td>
+            <td><p>@e.UneployDate</p></td>
+        </tr>
+        }
+    </table>
+</body>
+</html>
