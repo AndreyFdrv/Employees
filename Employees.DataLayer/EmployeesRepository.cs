@@ -43,14 +43,27 @@ namespace Employees.DataLayer
                 }
             }
         }
-        public IEnumerable<int> GetStatistics(int statusID, DateTime beginDate, DateTime endDate)
+        public IEnumerable<int> GetStatistics(int statusID, DateTime beginDate, DateTime endDate, string type)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "GetStatistics";
+                    switch (type)
+                    {
+                        case "all":
+                            command.CommandText = "GetAllStatistics";
+                            break;
+                        case "employ":
+                            command.CommandText = "GetEmployStatistics";
+                            break;
+                        case "uneploy":
+                            command.CommandText = "GetUneployStatistics";
+                            break;
+                        default:
+                            throw new ArgumentException($"Неизвестный тип статистики \"{type}\"");
+                    }
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add("@pStatusID", SqlDbType.Int).Value = statusID;
                     command.Parameters.Add("@pDate", SqlDbType.Date);

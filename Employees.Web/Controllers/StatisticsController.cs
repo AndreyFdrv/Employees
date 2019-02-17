@@ -25,11 +25,12 @@ namespace Employees.Web.Controllers
                 dates.Add(date);
             return dates;
         }
-        public ActionResult Statistics()
+        public ActionResult Statistics(string type="all")
         {
             ViewBag.Dates = CreateDates();
+            ViewBag.Type = type;
             ViewBag.Counts = EmployeesRepository.GetStatistics((int)Session["StatusID"], (DateTime)Session["BeginDate"],
-                (DateTime)Session["EndDate"]).ToList();
+                (DateTime)Session["EndDate"], type).ToList();
             return View();
         }
     }

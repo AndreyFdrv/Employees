@@ -6,10 +6,57 @@
     <title>Employees</title>
 </head>
 <body>
-    <h3>Количество принятых или уволенных сотрудников</h3>
+    <input type="button" value="Вернуться к списку сотрудников"
+           onclick="location.href='@Url.Action("Index", "Home")'" />
+    <div>
+        @using (Html.BeginForm())
+        {
+            <input type="hidden" name="type" value="all">
+            <button class="btn btn-primary" type="submit" formmethod="post">
+                Получить статистику для принятых или уволенных сотрудников
+            </button>
+        }
+        @using (Html.BeginForm())
+        {
+            <input type="hidden" name="type" value="employ">
+            <button class="btn btn-primary" type="submit" formmethod="post">
+                Получить статистику только для принятых сотрудников
+            </button>
+        }
+        @using (Html.BeginForm())
+        {
+            <input type="hidden" name="type" value="uneploy">
+            <button class="btn btn-primary" type="submit" formmethod="post">
+                Получить статистику только для уволенных сотрудников
+            </button>
+        }
+    </div>
+    @if (ViewBag.Type == "all")
+    {
+        <h3>Количество принятых или уволенных сотрудников</h3>
+    }
+    else if (ViewBag.Type == "employ")
+    {
+        <h3>Количество принятых сотрудников</h3>
+    }
+    else if (ViewBag.Type == "uneploy")
+    {
+        <h3>Количество уволенных сотрудников</h3>
+    }
     @if (ViewBag.Dates.Count == 0)
     {
-        <p>Для указанного статуса и периода принятые или уволенные сотрудники отсутвуют</p>
+        if (ViewBag.Type == "all")
+        {
+            <p>Для указанного статуса и периода принятые или уволенные сотрудники отсутвуют</p>
+        }
+        else if (ViewBag.Type == "employ")
+        {
+            <p>Для указанного статуса и периода принятые сотрудники отсутвуют</p>
+        }
+        else if (ViewBag.Type == "uneploy")
+        {
+            <p>Для указанного статуса и периода уволенные сотрудники отсутвуют</p>
+        }
     }
     else
     {
@@ -20,14 +67,14 @@
             </tr>
             @for (int i = 0; i < ViewBag.Dates.Count; i++)
             {
-            <tr>
-                @{ var date = ViewBag.Dates[i]; }
-                @{ var count = ViewBag.Counts[i]; }
-                <td><p>@date.ToString("dd.MM.yyyy")</p></td>
-                <td><p>@count</p></td>
-            </tr>
+                <tr>
+                    @{ var date = ViewBag.Dates[i]; }
+                    @{ var count = ViewBag.Counts[i]; }
+                    <td><p>@date.ToString("dd.MM.yyyy")</p></td>
+                    <td><p>@count</p></td>
+                </tr>
             }
         </table>
-        }
+    }
 </body>
 </html>

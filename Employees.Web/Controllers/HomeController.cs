@@ -19,14 +19,31 @@ namespace Employees.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.Employees = EmployeesRepository.GetEmployees();
-            ViewBag.Statuses = StatusesRepository.GetStatuses();
+            ViewBag.ErrorMessage = "";
+            Update();
             return View();
         }
+        private void Update()
+        {
+            ViewBag.Employees = EmployeesRepository.GetEmployees();
+            ViewBag.Statuses = StatusesRepository.GetStatuses();
+        }
         [HttpPost]
-        public ActionResult Index(DateTime beginDate, DateTime endDate)
+        public ActionResult Index(Nullable<DateTime> beginDate, Nullable<DateTime> endDate)
         {
             Session["StatusID"] = Int32.Parse(Request.Form["statusID"]);
+            if (beginDate == null)
+            {
+                ViewBag.ErrorMessage = "Не указана начальная дата";
+                Update();
+                return View();
+            }
+            if (endDate == null)
+            {
+                ViewBag.ErrorMessage = "Не указана конечная дата";
+                Update();
+                return View();
+            }
             Session["BeginDate"] = beginDate;
             Session["EndDate"] = endDate;
             return RedirectToAction("Statistics", "Statistics");
