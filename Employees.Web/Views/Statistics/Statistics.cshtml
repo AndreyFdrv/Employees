@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employees</title>
+</head>
+<body>
+    <h3>Количество принятых или уволенных сотрудников</h3>
+    @if (ViewBag.Dates.Count == 0)
+    {
+        <p>Для указанного статуса и периода принятые или уволенные сотрудники отсутвуют</p>
+    }
+    else
+    {
+        <table border="1">
+            <tr>
+                <td><p>Дата</p></td>
+                <td><p>Количество</p></td>
+            </tr>
+            @for (int i = 0; i < ViewBag.Dates.Count; i++)
+            {
+            <tr>
+                @{ var date = ViewBag.Dates[i]; }
+                @{ var count = ViewBag.Counts[i]; }
+                <td><p>@date.ToString("dd.MM.yyyy")</p></td>
+                <td><p>@count</p></td>
+            </tr>
+            }
+        </table>
+        }
+</body>
+</html>

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="EmployeesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusesRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Employees.Model\Employees.Model.csproj">

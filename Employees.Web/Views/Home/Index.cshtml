@@ -6,6 +6,25 @@
     <title>Employees</title>
 </head>
 <body>
+    <div style="border: 1px solid; padding: 10px; width: 150px">
+        @using (Html.BeginForm())
+        {
+            <p style="margin: 0px; padding: 0px;">Статус:</p>
+            <select name="statusID">
+                @foreach (var s in ViewBag.Statuses)
+                {
+                    <option value=@s.ID>@s.Name</option>
+                }
+            </select>
+            <p style="margin: 0px; padding: 0px;">Начальная дата:</p>
+            <input type="date" name="beginDate">
+            <p style="margin: 0px; padding: 0px;">Конечная дата:</p>
+            <input type="date" name="endDate">
+            <button class="btn btn-primary" type="submit" formmethod="post">
+                Получить статистику
+            </button>
+        }
+    </div>
     <h3>Список сотрудников</h3>
     <table border="1">
         <tr>

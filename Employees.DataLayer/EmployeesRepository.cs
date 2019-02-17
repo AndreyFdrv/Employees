@@ -1,4 +1,5 @@
 ﻿using Employees.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -38,6 +39,25 @@ namespace Employees.DataLayer
                                 Post = reader.GetString(reader.GetOrdinal("post"))
                             };
                         }
+                    }
+                }
+            }
+        }
+        public IEnumerable<int> GetStatistics(int statusID, DateTime beginDate, DateTime endDate)
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "GetStatistics";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add("@pStatusID", SqlDbType.Int).Value = statusID;
+                    command.Parameters.Add("@pDate", SqlDbType.Date);
+                    for (var date = beginDate.Date; date.Date <= endDate.Date; date = date.AddDays(1))
+                    {
+                        command.Parameters["@pDate"].Value = date;
+                        yield return (int)command.ExecuteScalar();
                     }
                 }
             }
