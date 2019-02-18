@@ -7,7 +7,7 @@
 </head>
 <body>
     <div style="border: 1px solid; padding: 10px; width: 150px">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Statistics", "Home"))
         {
             <p style="margin: 0px; padding: 0px;">Статус:</p>
             <select name="statusID">
@@ -31,6 +31,25 @@
     }
     <h3>Список сотрудников</h3>
     <table border="1">
+        <tr>
+            <td>
+                @using (Html.BeginForm("Sort", "Home"))
+                {
+                    <input type="hidden" name="type" value="asc">
+                    <input type="hidden" name="field" value="fullName">
+                    <button class="btn btn-primary" type="submit" formmethod="post">
+                        Упорядочить по возрастанию
+                    </button>
+                }
+                @using (Html.BeginForm("Sort", "Home"))
+                {
+                    <input type="hidden" name="type" value="desc">
+                    <input type="hidden" name="field" value="fullName">
+                    <button class="btn btn-primary" type="submit" formmethod="post">
+                        Упорядочить по убыванию
+                    </button>
+                }
+            </td>
         <tr>
             <td><p>ФИО</p></td>
             <td><p>Статус</p></td>

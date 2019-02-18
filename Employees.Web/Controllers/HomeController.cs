@@ -1,7 +1,10 @@
-﻿using Employees.DataLayer;
+﻿using Employees.Model;
+using Employees.DataLayer;
 using System;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Employees.Web.Controllers
 {
@@ -16,7 +19,6 @@ namespace Employees.Web.Controllers
             EmployeesRepository = new EmployeesRepository(ConnectionString);
             StatusesRepository = new StatusesRepository(ConnectionString);
         }
-        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.ErrorMessage = "";
@@ -28,8 +30,7 @@ namespace Employees.Web.Controllers
             ViewBag.Employees = EmployeesRepository.GetEmployees();
             ViewBag.Statuses = StatusesRepository.GetStatuses();
         }
-        [HttpPost]
-        public ActionResult Index(Nullable<DateTime> beginDate, Nullable<DateTime> endDate)
+        public ActionResult Statistics(Nullable<DateTime> beginDate, Nullable<DateTime> endDate)
         {
             Session["StatusID"] = Int32.Parse(Request.Form["statusID"]);
             if (beginDate == null)
@@ -47,6 +48,32 @@ namespace Employees.Web.Controllers
             Session["BeginDate"] = beginDate;
             Session["EndDate"] = endDate;
             return RedirectToAction("Statistics", "Statistics");
+        }
+        public ActionResult Sort(string type, string field)
+        {
+            Update();
+            switch (type)
+            {
+                case "asc":
+                    switch (field)
+                    {
+                        case "fullName":
+                            ViewBag.Employees = ((IEnumerable<Employee>)ViewBag.Employees).OrderBy(e =>
+                                e.SecondName + " " + e.FirstName[0] + "." + e.LastName[0] + ".");
+                            break;
+                    }
+                    break;
+                case "desc":
+                    switch (field)
+                    {
+                        case "fullName":
+                            ViewBag.Employees = ((IEnumerable<Employee>)ViewBag.Employees).OrderByDescending(e =>
+                                e.SecondName + " " + e.FirstName[0] + "." + e.LastName[0] + ".");
+                            break;
+                    }
+                    break;
+            }
+            return View("Index");
         }
     }
 }
